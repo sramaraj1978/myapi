@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       					  http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+						  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+						  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd						  
+					      http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+    <context:property-placeholder
+            location="classpath:application-${spring.profiles.active:local}.properties"/>
+
+    <context:component-scan base-package="com.inter, com.inter.transactions"/>
+
+    <import resource="classpath:cxf/cxf.xml" />
+
+
+    <jaxrs:client id="baseClient" serviceClass="org.apache.cxf.jaxrs.client.WebClient" address="${api.endpoint}">
+        <jaxrs:headers>
+            <entry key="Content-Type" value="application/json"/>
+            <entry key="Accept" value="application/json"/>
+        </jaxrs:headers>
+        <jaxrs:providers>
+            <ref bean="jsonProvider" />
+        </jaxrs:providers>
+    </jaxrs:client>
+
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+</beans>
